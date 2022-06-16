@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const connectDB = require("./db/connectDB");
 const userRouter = require("./routes/users");
+const exerciseRouter = require("./routes/exercises");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/users/:id/exercises", exerciseRouter);
 
 const start = async () => {
   await connectDB();
