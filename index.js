@@ -1,18 +1,31 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-require('dotenv').config()
+require("dotenv").config();
 
-app.use(cors())
-app.use(express.static('public'))
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html')
+const express = require("express");
+const cors = require("cors");
+
+const connectDB = require("./db/connectDB");
+const userRouter = require("./routes/users");
+
+const app = express();
+
+app.use(cors());
+
+app.use(express.json());
+// setup app to handle form data
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static("public"));
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/views/index.html");
 });
 
+app.use("/api/users", userRouter);
 
+const start = async () => {
+  await connectDB();
+  const listener = app.listen(process.env.PORT || 5000, () => {
+    console.log("Your app is listening on port " + listener.address().port);
+  });
+};
 
-
-
-const listener = app.listen(process.env.PORT || 3000, () => {
-  console.log('Your app is listening on port ' + listener.address().port)
-})
+start();
