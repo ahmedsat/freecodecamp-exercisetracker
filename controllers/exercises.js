@@ -7,8 +7,6 @@ const createExercise = async (req, res) => {
     params: { id: userId },
   } = req;
 
-  console.log(req.params);
-
   const user = await User.findById(userId);
   if (!user) {
     return res.status(404).json({ error: "User not found" });
@@ -20,7 +18,6 @@ const createExercise = async (req, res) => {
     dateObj.setTime(Date.now());
   }
 
-  console.log(dateObj.toDateString());
   const exercise = new Exercises({
     userId,
     username: user.username,
